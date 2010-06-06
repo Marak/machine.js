@@ -31,7 +31,7 @@ machine.enter = function( state ){
     var stateMachine = $(e).data('machine');
     
     console.log(stateMachine, $(e));
-    stateMachine.entered();
+    stateMachine.entered( state );
     //$(e).data('machine');
   });
   
