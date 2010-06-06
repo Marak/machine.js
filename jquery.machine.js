@@ -28,7 +28,11 @@ machine.enter = function( state ){
   console.log('entering state : ', state);
   // a new state has been entered, find all elements that are machines and check if they match
   $("[data-behaviors*='machine']").each(function(i,e){
-    console.log($(e).data('machine'));
+    var stateMachine = $(e).data('machine');
+    
+    console.log(stateMachine, $(e));
+    stateMachine.entered();
+    //$(e).data('machine');
   });
   
   
