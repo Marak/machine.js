@@ -1,5 +1,8 @@
+// create the machine selector
+
 $.fn.machine = function(settings) {
   var config = {
+    state : "/",
     entering : function(){
       debug.log('entering state');
     },
@@ -15,6 +18,18 @@ $.fn.machine = function(settings) {
   };
 
   if (settings) $.extend(config, settings);
-  $(this).data( 'state', config );        
+  $(this).data( 'machine' , config );        
   return this;
+};
+
+// create the machine itself
+var machine = {};
+machine.enter = function( state ){
+  console.log('entering state : ', state);
+  // a new state has been entered, find all elements that are machines and check if they match
+  $("[data-behaviors*='machine']").each(function(i,e){
+    console.log($(e).data('machine'));
+  });
+  
+  
 };
