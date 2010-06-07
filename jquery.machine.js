@@ -2,7 +2,7 @@
 
 $.fn.machine = function(settings) {
   var config = {
-    state : "/",
+    state : "default",
     entering : function(){
       debug.log('entering state');
     },
@@ -17,9 +17,25 @@ $.fn.machine = function(settings) {
     }
   };
 
-  if (settings) $.extend(config, settings);
-  debug.log('about to bind ', settings);
-  $(this).data( 'machine' , settings );        
+  //if (settings) $.extend(config, settings);
+  var settings = settings || config;
+  
+  
+  debug.log($(this).data('machine') || {});
+  // check if there is already a machine behavior defined, this code is not optimal (see: wrong) and should be replaced with better settings / config
+  if($(this).data('machine') != null){
+   debug.log('is already a machine! not going to reapply machine settings');
+   return false;  
+  }
+  
+  debug.log('machine behavior being applied to ', $(this) , settings);
+  
+  // attach the machine metadata to DOM selector
+  $(this).data( 'machine' , settings );  
+  
+  // in addition to setting the machine metadata we are going to actually set the data-behaviors tag attribute ( for consistancy / easy parsing )
+  $(this).attr('data-behaviors', 'machine');
+        
   return this;
 };
 
@@ -33,6 +49,7 @@ machine.enter = function( state ){
     if(stateMachine){
       debug.log(stateMachine, $(e));
       //debug.log('the state is ', state);
+      debug.log('about to execute ', stateMachine.entered.toString());
       stateMachine.entered( state );
       //$(e).data('machine');
     }
