@@ -41,20 +41,41 @@ $.fn.machine = function(settings) {
 
 // create the machine itself
 var machine = {};
-machine.enter = function( state ){
+machine.enter = function( state , context ){
   debug.log('entering state : ', state);
+  
+  if(typeof context == 'undefined'){
+    var context = document;
+  }
+  
+  //debug.log($(context));  
   // a new state has been entered, find all elements that are machines and check if they match
-  $("[data-behaviors*='machine']").each(function(i,e){
+  $("[data-behaviors*='machine']", $(context)).each(function(i,e){
     var stateMachine = $(e).data('machine') || false;
     if(stateMachine){
       debug.log(stateMachine, $(e));
       //debug.log('the state is ', state);
       debug.log('about to execute ', stateMachine.entered.toString());
-      stateMachine.entered( state );
+      $(e).data( 'state' , state );  
+      stateMachine.entered.apply( this, [state] );
       //$(e).data('machine');
     }
     
   });
   
+};
+
+
+machine.getContext = function(machine,context){
+  debug.log('getting context', machine, context);
   
+  // determine the context of the view we are in
+  var context = $(machine).parents().find("[data-behaviors*='machine']");
+  context = context.toArray().reverse();
+  
+  if(!context.length){
+    context = machine;
+  }
+  
+  return context;
 };
