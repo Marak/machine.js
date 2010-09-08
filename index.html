@@ -20,7 +20,7 @@
     $('#example1 .content').machine({
       entered: function( state ){
         var color = state;
-        $(this).css('background-color', state);
+        $(this).css('background-color', color);
       }
     });
 
@@ -34,7 +34,7 @@
         //debug.log(color, this);
         $(this).find('div').hide();
         $('#' + state).show();
-        $(this).css('background-color', state);
+        $(this).css('background-color', color);
       }
     });
     
@@ -57,7 +57,7 @@
         //debug.log(color, this);
         $(this).find('div').hide();
         $('#' + state).show();
-        $(this).css('background-color', state);
+        $(this).css('background-color', color);
       }
     });
     
