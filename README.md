@@ -24,6 +24,7 @@ machine.js is a simple plugin that will allow you to treat DOM elements as state
         machine.enter( $(this).html() ); // optional second argument "context" will default to value "document"
       });
 
+      ...
 
       <button>red</button>
       <button>green</button>
