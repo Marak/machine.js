@@ -3,7 +3,7 @@
 
 /* override DOM elements */
 body{ padding:0px; margin:0 auto; background:#fff; font-family:Arial, Helvetica, sans-serif;}
-ul { margin:0px; list-style:none; padding-bottom:30px; }
+ul { margin:0px;}
 a { color:#0000FF;}
 a.visited{ color:#0000FF;}
 p {font-size:14px;}
@@ -67,3 +67,5 @@ pre{ background-color:#CCC; color:#222; padding-left:50px;   padding-top:20px; p
 .has_children{display:none;}
 .expand_children{text-align:left; font-size:24px; cursor:pointer;}
 /* end templates */
+
+h1, h2 {padding-left:15px;}

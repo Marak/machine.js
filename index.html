@@ -76,12 +76,13 @@
   <style>
     .content { background-color:#CCC; height:200px; width:200px; }
     .content div {display:none;}
-    .container {width:240px; float:left; border:solid; padding:10px; margin:10px;}
+    .container {width:240px; float:left; border:solid; padding-left:10px; margin-left:10px; padding-bottom:10px; margin-bottom:10px;padding-right:10px; margin-right:10px;}
     .output { background-color:#FFF; height:200px; width:200px; display:none;}
   </style>
 </head>
 <body>
-  <h1>&nbsp;machine.js - turn css selectors into state machines</h1>
+  <h1>machine.js - turn css selectors into state machines</h1>
+  <h2>view source to reveal</h2>
   <div class="container">
     <p>
     machine.js is a simple plugin that will allow you to treat DOM elements as state machines
@@ -107,7 +108,7 @@
 
   <div id="example2" class="container">
     <h3>example 2</h3>
-    creating a menu and content area with location.hash changes <br/>
+    creating a menu and content area with location.hash changes (<a href = "http://maraksquires.com/route.js/">routing</a>) <br/> <br/>
     <ul>
       <li><a href="#/red">red</a></li>
       <li><a href="#/green">green</a></li>
