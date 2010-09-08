@@ -21,10 +21,7 @@ machine.js is a simple plugin that will allow you to treat DOM elements as state
       // here we define a click event for our buttons
       $('button').click( function(){
         // when a button is clicked, enter a new state based on the button's value
-        machine.enter( $(this).html() );
-        // notice we didn't specify a context for the machine?
-        // the second (and optional) argument to machine.enter() is the context of the machine
-        // if no machine context is specified, the context is "document"
+        machine.enter( $(this).html() ); // optional second argument "context" will default to value "document"
       });
 
 
