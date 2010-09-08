@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>machine.js</title>
+  <meta name="generator" content="TextMate http://macromates.com/">
+  <meta name="author" content="Marak">
+  <!-- Date: 2010-09-07 -->
+  
+  <script src = "../jquery-1.4.2.min.js" type="text/javascript"></script>
+  <script src = "../debug.js" type="text/javascript"></script>
+  <script src = "jquery.machine.js" type="text/javascript"></script>
+  
+  <script type="text/javascript">
+  
+  $(document).ready(function(){
+
+    $('#example1 .content').machine({
+      entered: function( state ){
+        var color = state;
+        $(this).css('background-color', state);
+      }
+    });
+
+    $('#example1 button').click( function(){
+      machine.enter( $(this).html() );
+    });
+
+    $('#example2 .content').machine({
+      entered: function( state ){
+        var color = state;
+        //debug.log(color, this);
+        $(this).find('div').hide();
+        $('#' + state).show();
+        $(this).css('background-color', state);
+      }
+    });
+    
+    // really simple and not very good location.hash dispatcher: http://maraksquires.com/route.js/#/Learn/Binding_routes_to_the_browsers_url_bar
+    var Biggie={}; 
+    Biggie._hashchange_last = ''; 
+    Biggie._onhashchange=function(){ 
+      if(Biggie._hashchange_last!=location.hash){ 
+        Biggie._hashchange_last=location.hash; 
+        machine.enter( location.hash.replace('#/','') );
+      }
+    };  
+    /* use interval to check for changes on the location.hash  
+       instead of trying to detect HTML5 hashchange event    */ 
+    setInterval(function () {Biggie._onhashchange();}, 50);
+
+    $('#example3 .content').machine({
+      entered: function( state ){
+        var color = state;
+        //debug.log(color, this);
+        $(this).find('div').hide();
+        $('#' + state).show();
+        $(this).css('background-color', state);
+      }
+    });
+    
+    
+    $('#example3 button').live('click', function(){
+      var context = $('#context').val();
+      machine.enter( $(this).html() , context);
+    });
+
+
+  });
+  
+  </script>
+  
+  <style>
+    .content { background-color:#CCC; height:200px; width:200px; }
+    .content div {display:none;}
+    .container {width:300px; float:left; border:solid; padding:10px; margin:10px;}
+    .output { background-color:#FFF; height:200px; width:200px; display:none;}
+    
+    
+  </style>
+</head>
+<body>
+
+  <h1>machine.js - turn css selectors into state machines</h1>
+
+  <div id="example1" class="container">
+    <h3>example 1</h3>
+    creating a simple state machine <br/>
+    <button>red</button>
+    <button>green</button>
+    <button>yellow</button>
+    <button>purple</button>
+    <br/>
+  
+    <div class="content"></div>
+    <textarea id="output1" class="output"></textarea>
+  </div>
+
+  <div id="example2" class="container">
+    <h3>example 2</h3>
+    creating a menu and content area with location.hash changes <br/>
+    <ul>
+      <li><a href="#/red">red</a></li>
+      <li><a href="#/green">green</a></li>
+      <li><a href="#/yellow">yellow</a></li>
+      <li><a href="#/purple">purple</a></li>
+    </ul>
+    <br/>
+
+    <div class="content">
+      <div id="red">this is the red area</div>
+      <div id="green">this is the green area</div>
+      <div id="yellow">this is the yellow area</div>
+      <div id="purple">this is the purple area</div>
+    </div>
+  </div>
+
+  <div id="example3" class="container">
+    <h3>example 3</h3>
+    executing states in a context <br/>
+    context: 
+    <select id="context">
+      <option value="document">document</option>
+      <option value="#example1">#example1</option>
+      <option value="#example2">#example2</option>
+    </select>
+    <br/>
+    <button>red</button>
+    <button>green</button>
+    <button>yellow</button>
+    <button>purple</button>
+  </div>
+</body>
+</html>
