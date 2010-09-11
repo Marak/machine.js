@@ -5,6 +5,7 @@ $.fn.machine = function(settings) {
   // this is an example of a configuration object
   // there are four basic states for every machine: entering, entered, exiting, exited
   var config = {
+    
     entering : function( state ){
       debug.log('entering state ', state);
     },
@@ -28,6 +29,7 @@ $.fn.machine = function(settings) {
    return false;  
   }
   
+  //console.log($(this));
   // attach the machine metadata to DOM selector
   $(this).data('machine' , settings );  
   
@@ -43,25 +45,64 @@ var machine = {}; // global namespace is not ideal
 
 // the machine can enter diffirent states in diffirent contextes
 machine.enter = function( state , context ){
-  
+  //console.log('machine.enter', state, context);
   if(typeof context == 'undefined' || context == 'document'){
     var context = document;
   }
 
   //debug.log('entering state : ', state, ' with context ', context);
 
-  // a new state has been entered, find all elements that are machines and check if they match
+  // we need to determine what our current state is before attempting a state change
+  // the convention is that states stored as "/" delimited strings (like a url)
+  // we need to traverse all state machines and attempt to fix the path where we should be changing our state
+  
+  // get all states 
+  var states = state.split('/');
+
+  if(states.length>1){
+    // we are going to iterate through all the machines and drill into our current state
+    for(var i = 0; i < states.length; i++){
+      var walk = machine.findByState( states[i], document);
+      //console.log('walk', walk, states[i+1]);
+      
+      if(walk==false){
+        
+      }
+      else{
+        machine.enter( states[i+1], walk);
+        return;
+      }
+      
+    }
+  }
+  else{
+    
+    // a new state has been entered, find all elements that are machines and check if they match
+    $("[data-behaviors*='machine']:first", $(context)).each(function(i,e){
+      var stateMachine = $(e).data('machine') || false;
+      if(stateMachine){
+        var currentState = $(e).data( 'state' );
+        $(e).data( 'state' , state );  
+        stateMachine.entered( [state] );
+      }
+    });
+  }
+  
+};
+
+machine.findByState = function( state, context ){
+  //console.log('machine.findByState', state, context);
+  var r = false;
+  // iterate through every machine in the context
   $("[data-behaviors*='machine']", $(context)).each(function(i,e){
-    var stateMachine = $(e).data('machine') || false;
-    if(stateMachine){
-      //debug.log(stateMachine, $(e));
-      //debug.log('the state is ', state);
-      //debug.log('about to execute ', stateMachine.entered.toString());
-      $(e).data( 'state' , state );  
-      stateMachine.entered.apply( this, [state] );
+    if( $(e).data('state') == state){
+      //console.log('we found a machine with that state', state,  $(e));
+      r = $(e);
     }
   });
+  return r;
 };
+
 
 // helper method for getting context, not fully implemented
 machine.getContext = function(machine,context){
@@ -78,3 +119,5 @@ machine.getContext = function(machine,context){
   
   return context;
 };
+
+
