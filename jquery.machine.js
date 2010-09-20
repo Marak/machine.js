@@ -50,6 +50,7 @@ machine.enter = function( state , context ){
     var context = document;
   }
 
+
   //debug.log('entering state : ', state, ' with context ', context);
 
   // we need to determine what our current state is before attempting a state change
@@ -77,8 +78,17 @@ machine.enter = function( state , context ){
   }
   else{
     
+
+    /*** this is a bit of a hack in case a user passes in a context which is the machine itself */
+    var sel = $("[data-behaviors*='machine']:first", $(context));
+    // check to see if we found any machines in the current context
+    if(sel.length == 0){
+      // if we have not found any machines, lets bubble up one level of the DOM
+      sel = $("[data-behaviors*='machine']:first", $(context).parent());
+    }
+    
     // a new state has been entered, find all elements that are machines and check if they match
-    $("[data-behaviors*='machine']:first", $(context)).each(function(i,e){
+    sel.each(function(i,e){
       var stateMachine = $(e).data('machine') || false;
       if(stateMachine){
         var currentState = $(e).data( 'state' );
