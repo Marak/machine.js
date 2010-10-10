@@ -60,12 +60,17 @@ machine.enter = function( state , context ){
   // get all states 
   var states = state.split('/');
 
+  //console.log($(context), states);
+
   if(states.length>1){
     // we are going to iterate through all the machines and drill into our current state
-    for(var i = 0; i < states.length; i++){
-      var walk = machine.findByState( states[i], document);
-      //console.log('walk', walk, states[i+1]);
-      
+    
+    machine._enter(states[0], context);
+    var walk = machine.findByState( states[0], document);
+    machine._enter(states[1], walk);
+
+    /*
+    for(var i = 1; i < states.length; i++){
       if(walk==false){
         
       }
@@ -73,32 +78,38 @@ machine.enter = function( state , context ){
         machine.enter( states[i+1], walk);
         return;
       }
-      
     }
+    */
+
   }
   else{
-    
-
-    /*** this is a bit of a hack in case a user passes in a context which is the machine itself */
-    var sel = $("[data-behaviors*='machine']:first", $(context));
-    // check to see if we found any machines in the current context
-    if(sel.length == 0){
-      // if we have not found any machines, lets bubble up one level of the DOM
-      sel = $("[data-behaviors*='machine']:first", $(context).parent());
-    }
-    
-    // a new state has been entered, find all elements that are machines and check if they match
-    sel.each(function(i,e){
-      var stateMachine = $(e).data('machine') || false;
-      if(stateMachine){
-        var currentState = $(e).data( 'state' );
-        $(e).data( 'state' , state );  
-        stateMachine.entered( [state] );
-      }
-    });
+    machine._enter(state, context);
   }
   
 };
+
+
+machine._enter = function(state, context){
+    
+  /*** this is a bit of a hack in case a user passes in a context which is the machine itself */
+  var sel = $("[data-behaviors*='machine']:first", $(context));
+  // check to see if we found any machines in the current context
+  if(sel.length == 0){
+    // if we have not found any machines, lets bubble up one level of the DOM
+    sel = $("[data-behaviors*='machine']:first", $(context).parent());
+  }
+
+  // a new state has been entered, find all elements that are machines and check if they match
+  sel.each(function(i,e){
+    var stateMachine = $(e).data('machine') || false;
+    if(stateMachine){
+      var currentState = $(e).data( 'state' );
+      $(e).data( 'state' , state );  
+      stateMachine.entered( [state] );
+    }
+  });
+    
+}
 
 machine.findByState = function( state, context ){
   //console.log('machine.findByState', state, context);
