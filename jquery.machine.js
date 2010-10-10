@@ -90,7 +90,8 @@ machine.enter = function( state , context ){
 
 
 machine._enter = function(state, context){
-    
+  //console.log('machine._enter ', state, context);  
+  
   /*** this is a bit of a hack in case a user passes in a context which is the machine itself */
   var sel = $("[data-behaviors*='machine']:first", $(context));
   // check to see if we found any machines in the current context
@@ -105,7 +106,7 @@ machine._enter = function(state, context){
     if(stateMachine){
       var currentState = $(e).data( 'state' );
       $(e).data( 'state' , state );  
-      stateMachine.entered( [state] );
+      stateMachine.entered( [state].toString() );
     }
   });
     
