@@ -43,6 +43,14 @@ $.fn.machine = function(settings) {
 // create the machine itself
 var machine = {}; // global namespace is not ideal
 
+// history contains an array of objects 
+//   {
+//      "state": state,
+//      "context": context    
+//   }
+
+machine.history = [];
+
 // the machine can enter diffirent states in diffirent contextes
 machine.enter = function( state , context ){
   //console.log('machine.enter', state, context);
@@ -90,7 +98,13 @@ machine.enter = function( state , context ){
 
 
 machine._enter = function(state, context){
+
   //console.log('machine._enter ', state, context);  
+  machine.history.push({
+    "state"   : state,
+    "context" : context
+  });
+  
   
   /*** this is a bit of a hack in case a user passes in a context which is the machine itself */
   var sel = $("[data-behaviors*='machine']:first", $(context));
@@ -141,5 +155,3 @@ machine.getContext = function(machine,context){
   
   return context;
 };
-
-
