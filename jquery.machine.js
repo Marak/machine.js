@@ -58,6 +58,11 @@ machine.enter = function( state , context ){
     var context = document;
   }
 
+  //console.log('machine._enter ', state, context);  
+  machine.history.push({
+    "state"   : state,
+    "context" : context
+  });
 
   //debug.log('entering state : ', state, ' with context ', context);
 
@@ -98,13 +103,6 @@ machine.enter = function( state , context ){
 
 
 machine._enter = function(state, context){
-
-  //console.log('machine._enter ', state, context);  
-  machine.history.push({
-    "state"   : state,
-    "context" : context
-  });
-  
   
   /*** this is a bit of a hack in case a user passes in a context which is the machine itself */
   var sel = $("[data-behaviors*='machine']:first", $(context));
